@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: autofill-review-desk
+    runtime: python
+    rootDir: review_api
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    # One worker keeps the SQLite file consistent; threads handle concurrent requests
+    # while a Claude call is in flight.
+    startCommand: gunicorn app:app --workers 1 --threads 8 --timeout 120 --bind 0.0.0.0:$PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: APP_ACCESS_KEY
+        sync: false
+      - key: NOTIFY_WEBHOOK_URL
+        sync: false
+      - key: CLAUDE_MODEL
+        value: claude-opus-5
+      - key: CLAUDE_EFFORT
+        value: medium
+      - key: NOTIFY_MIN_PRIORITY
+        value: high
+      - key: DATABASE_PATH
+        value: /tmp/reviews.db

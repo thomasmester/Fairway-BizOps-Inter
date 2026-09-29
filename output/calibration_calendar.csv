@@ -1,0 +1,21 @@
+day,state,state_rank,form,volume,wave,cum_share_of_transactions
+1,Texas,1,New vehicle transaction,53,1,0.265
+2,Texas,1,Used vehicle transaction,11,1,0.32
+3,Alabama,2,Used vehicle transaction,11,1,0.375
+4,Arizona,3,Used vehicle transaction,11,1,0.43
+5,Georgia,4,New vehicle transaction,8,1,0.47
+6,Florida,5,New vehicle transaction,16,1,0.55
+7,Tennessee,6,New vehicle transaction,2,1,0.56
+8,Colorado,7,New vehicle transaction,9,1,0.605
+9,Virginia,8,Used vehicle transaction,1,1,0.61
+10,California,9,New vehicle transaction,3,1,0.625
+11,Pennsylvania,10,Used vehicle transaction,3,1,0.64
+12,Colorado,7,Used vehicle transaction,4,2,0.66
+13,Arizona,3,New vehicle transaction,3,2,0.675
+14,Florida,5,Used vehicle transaction,3,2,0.69
+15,Alabama,2,New vehicle transaction,2,2,0.7
+16,Pennsylvania,10,New vehicle transaction,2,2,0.71
+17,Georgia,4,Used vehicle transaction,1,2,0.715
+18,Tennessee,6,Used vehicle transaction,1,2,0.72
+19,California,9,Used vehicle transaction,1,2,0.725
+20,Virginia,8,New vehicle transaction,0,2,0.725

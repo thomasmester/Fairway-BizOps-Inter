@@ -1,0 +1,17 @@
+<section id="triage" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:112px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 2 · The six examples</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Only half of them are mapping edits</h2>
+</div>
+<table style="font-size:24px; color:#14213D">
+<tr><th style="width:26%; text-align:left">Comment</th><th style="width:24%; text-align:left">Category</th><th style="width:50%; text-align:left">What we do</th></tr>
+<tr><td>1 · Lessor, not lessee</td><td>Mapping error</td><td>Repoint the field globally; retest leases</td></tr>
+<tr><td>2 · Blank odometer if new</td><td>Rule or preference</td><td>State exempts it: global rule. Else a customer override</td></tr>
+<tr><td>3 · VIN has O for 0</td><td>Extraction bug</td><td>Send to AI team; add VIN validation. No mapping edit</td></tr>
+<tr><td>4 · Old form version</td><td>Form version</td><td>Version the form, re-map, recalibrate; watch DMVs</td></tr>
+<tr><td>5 · Dealer fees, yes or no</td><td>Conflicting</td><td>Hold; check the state's price definition; one answer from the admin</td></tr>
+<tr><td>6 · Lien on a cash sale</td><td>Condition error</td><td>Fix the "only if financed" rule, or the input data</td></tr>
+</table>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Mapping or condition edits: 1, 6 and possibly 2. The rest go to extraction, forms or the customer.</p>
+<aside>Point out example 3: a VIN never contains O, I or Q, so this can be caught automatically with a validation rule. Example 5 is the most important process point: conflicting feedback never goes straight into a mapping.</aside>
+</section>

@@ -1,0 +1,21 @@
+deal_id,account,segment,stage,close_probability,annual_value_usd,expected_close,products,states,notes,prob,includes_autofill,haircut,adjustment_reason,counted,adj_value
+D01,Existing customer 87,Fleet management,Proposal,60%,180000,2026-11-15,Autofill,All 50,Expansion. Already uses Audit in 30+ states. Wants Autofill everywhere they operate.,0.6,True,1.0,,True,108000.0
+D02,Existing customer 110 / 121,Fleet management,Negotiation,80%,150000,2026-10-31,Autofill,"TX, FL, AZ",Expansion. Pricing agreed; wants Texas live first.,0.8,True,1.0,,True,120000.0
+D03,Lone Star Auto Group,Dealer group,POC,35%,420000,2027-01-15,Audit + Autofill,TX,25 rooftops. POC scored on Autofill accuracy.,0.35,True,1.0,,True,147000.0
+D04,Sunshine Tag Services,Tag agency,Qualified,20%,65000,2026-12-15,Autofill,FL,,0.2,True,1.0,,True,13000.0
+D05,Pacific Coast Remarketing,Auction,Discovery,10%,900000,2027-06-30,Complete,"CA, OR, WA, NV, AZ",First call held. Amount is rep's estimate.,0.1,True,0.5,Discovery stage; amount is the rep's estimate after one call,True,45000.0
+D06,National Fleet Partners,Fleet management,Legal Review,50%,1200000,2026-06-30,Complete,All 50,Stuck in legal review since May.,0.5,True,0.25,Expected close 2026-06-30 already passed; stuck in legal since May,True,150000.0
+D07,Old Dominion Dealers Association,Dealer association,Negotiation,75%,1500000,2026-12-31,Audit + Autofill,VA,Verbal yes. Autofill is a must-have to sign.,0.75,True,1.0,,True,1125000.0
+D08,Chesapeake Dealer Alliance,Dealer association,Proposal,25%,2000000,2027-03-31,Audit + Autofill,MD,Depends on a state fee bill passing next session.,0.25,True,0.5,Conditional on a state fee bill passing next session,True,250000.0
+D09,Peach State Motors,Dealer group,Closed Won,100%,95000,2026-09-15,Audit + Autofill,"GA, AL, TN",Signed. Onboarding starts in October; Autofill promised for Q4.,1.0,True,1.0,,True,95000.0
+D10,Midwest Wholesale Auctions,Auction,POC,35%,2500000,2027-02-28,Audit,"IL, IN, OH, MI, WI, MO, IA",,0.35,False,1.0,Audit only; creates no Autofill calibration need,False,0.0
+D11,Great Lakes Title Co,Tag agency,Discovery,10%,40000,2027-03-31,Autofill,MI,,0.1,True,1.0,,True,4000.0
+D12,Rocky Mountain Fleet,Fleet management,Qualified,20%,210000,2027-01-31,Audit + Autofill,"CO, UT, WY, NM",,0.2,True,1.0,,True,42000.0
+D13,Coastal Carolina Motors,Dealer group,Closed Lost,0%,75000,2026-08-31,Audit + Autofill,"NC, SC",Went with an in-house process.,0.0,True,1.0,,False,0.0
+D14,Empire Leasing,Fleet management,Proposal,45%,600000,2027-01-31,Audit + Autofill,"NY, NJ, PA, CT, MA",,0.45,True,1.0,,True,270000.0
+D15,Gulf South Auto,Dealer group,POC,35%,55000,2026-12-31,Autofill,"LA, MS, AL",,0.35,True,1.0,,True,19250.0
+D16,Heartland Rental Fleet,Fleet management,Discovery,10%,800000,2027-09-30,Complete,All 50,,0.1,True,1.0,,True,80000.0
+D17,Desert Sun Dealers,Dealer group,Negotiation,70%,130000,2026-11-30,Audit + Autofill,"AZ, NV",,0.7,True,1.0,,True,91000.0
+D18,Big Sky Motors,Dealer group,Qualified,20%,25000,2027-02-28,Autofill,MT,,0.2,True,1.0,,True,5000.0
+D19,Tri-State Tag & Title,Tag agency,Closed Lost,0%,310000,2026-07-31,Audit + Autofill,"NY, NJ, PA",Lost to a competitor. Reason given: we had no Autofill.,0.0,True,1.0,,False,0.0
+D20,Keystone Fleet Services,Fleet management,Legal Review,60%,450000,2026-11-30,Audit + Autofill,"PA, NJ, DE, MD",,0.6,True,1.0,,True,270000.0

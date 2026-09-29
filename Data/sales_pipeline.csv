@@ -1,0 +1,21 @@
+deal_id,account,segment,stage,close_probability,annual_value_usd,expected_close,products,states,notes
+D01,Existing customer 87,Fleet management,Proposal,60%,180000,2026-11-15,Autofill,All 50,Expansion. Already uses Audit in 30+ states. Wants Autofill everywhere they operate.
+D02,Existing customer 110 / 121,Fleet management,Negotiation,80%,150000,2026-10-31,Autofill,"TX, FL, AZ",Expansion. Pricing agreed; wants Texas live first.
+D03,Lone Star Auto Group,Dealer group,POC,35%,420000,2027-01-15,Audit + Autofill,TX,25 rooftops. POC scored on Autofill accuracy.
+D04,Sunshine Tag Services,Tag agency,Qualified,20%,65000,2026-12-15,Autofill,FL,
+D05,Pacific Coast Remarketing,Auction,Discovery,10%,900000,2027-06-30,Complete,"CA, OR, WA, NV, AZ",First call held. Amount is rep's estimate.
+D06,National Fleet Partners,Fleet management,Legal Review,50%,1200000,2026-06-30,Complete,All 50,Stuck in legal review since May.
+D07,Old Dominion Dealers Association,Dealer association,Negotiation,75%,1500000,2026-12-31,Audit + Autofill,VA,Verbal yes. Autofill is a must-have to sign.
+D08,Chesapeake Dealer Alliance,Dealer association,Proposal,25%,2000000,2027-03-31,Audit + Autofill,MD,Depends on a state fee bill passing next session.
+D09,Peach State Motors,Dealer group,Closed Won,100%,95000,2026-09-15,Audit + Autofill,"GA, AL, TN",Signed. Onboarding starts in October; Autofill promised for Q4.
+D10,Midwest Wholesale Auctions,Auction,POC,35%,2500000,2027-02-28,Audit,"IL, IN, OH, MI, WI, MO, IA",
+D11,Great Lakes Title Co,Tag agency,Discovery,10%,40000,2027-03-31,Autofill,MI,
+D12,Rocky Mountain Fleet,Fleet management,Qualified,20%,210000,2027-01-31,Audit + Autofill,"CO, UT, WY, NM",
+D13,Coastal Carolina Motors,Dealer group,Closed Lost,0%,75000,2026-08-31,Audit + Autofill,"NC, SC",Went with an in-house process.
+D14,Empire Leasing,Fleet management,Proposal,45%,600000,2027-01-31,Audit + Autofill,"NY, NJ, PA, CT, MA",
+D15,Gulf South Auto,Dealer group,POC,35%,55000,2026-12-31,Autofill,"LA, MS, AL",
+D16,Heartland Rental Fleet,Fleet management,Discovery,10%,800000,2027-09-30,Complete,All 50,
+D17,Desert Sun Dealers,Dealer group,Negotiation,70%,130000,2026-11-30,Audit + Autofill,"AZ, NV",
+D18,Big Sky Motors,Dealer group,Qualified,20%,25000,2027-02-28,Autofill,MT,
+D19,Tri-State Tag & Title,Tag agency,Closed Lost,0%,310000,2026-07-31,Audit + Autofill,"NY, NJ, PA",Lost to a competitor. Reason given: we had no Autofill.
+D20,Keystone Fleet Services,Fleet management,Legal Review,60%,450000,2026-11-30,Audit + Autofill,"PA, NJ, DE, MD",

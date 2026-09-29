@@ -1,0 +1,301 @@
+<title>Autofill Calibration Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400..700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F7F6F2; --card:#FFFFFF; --ink:#14213D; --ink-soft:#3E4A63; --muted:#6B7488;
+  --rule:#DAD6CC; --accent:#B85C1E; --accent-tint:#FBEBDD; --blue:#2E5E86; --blue-tint:#E4ECF4;
+  --bar:#14213D; --good:#2F7A4F; --warn:#9A6200;
+  --serif:'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans:'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+  --mono:'IBM Plex Mono', Consolas, 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#10182B; --card:#172239; --ink:#EEF1F6; --ink-soft:#C3CBDA; --muted:#8F9AB0;
+    --rule:#2B3A5A; --accent:#F0A263; --accent-tint:#3A2A1E; --blue:#8DB8DE; --blue-tint:#1D3050;
+    --bar:#C3CBDA; --good:#6FCB94; --warn:#E6B45C; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10182B; --card:#172239; --ink:#EEF1F6; --ink-soft:#C3CBDA; --muted:#8F9AB0;
+  --rule:#2B3A5A; --accent:#F0A263; --accent-tint:#3A2A1E; --blue:#8DB8DE; --blue-tint:#1D3050;
+  --bar:#C3CBDA; --good:#6FCB94; --warn:#E6B45C; color-scheme:dark;
+}
+body{background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.55}
+.wrap{max-width:1040px; margin:0 auto; padding-inline:20px; padding-block:48px 80px; display:flex; flex-direction:column; gap:56px}
+h1,h2,h3{font-family:var(--serif); text-wrap:balance; line-height:1.15; margin:0}
+h1{font-size:clamp(34px,5vw,54px); font-weight:600}
+h2{font-size:clamp(26px,3.2vw,34px); font-weight:600}
+h3{font-size:20px; font-weight:600}
+p{margin:0; max-width:68ch}
+.eyebrow{font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600}
+.lede{font-size:19px; color:var(--ink-soft)}
+section{display:flex; flex-direction:column; gap:18px}
+.head{display:flex; flex-direction:column; gap:8px}
+.facts{display:flex; flex-wrap:wrap; gap:12px 36px; padding-top:18px; border-top:1px solid var(--rule)}
+.fact b{display:block; font-family:var(--serif); font-size:34px; color:var(--accent); font-weight:600; line-height:1.1}
+.fact span{font-size:14px; color:var(--muted)}
+.tablebox{overflow-x:auto; border:1px solid var(--rule); border-radius:10px; background:var(--card)}
+table{width:100%; border-collapse:collapse; font-size:15px; font-variant-numeric:tabular-nums}
+th{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; text-align:left; padding:10px 14px; border-bottom:1px solid var(--rule); white-space:nowrap}
+td{padding:10px 14px; border-bottom:1px solid var(--rule); vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right}
+.rank{font-family:var(--mono); color:var(--muted)}
+.state{font-weight:600; white-space:nowrap}
+.tag{display:inline-block; font-size:12px; font-weight:600; padding:1px 8px; border-radius:99px; margin-left:6px; vertical-align:1px}
+.tag.pipe{background:var(--blue-tint); color:var(--blue)}
+.tag.promise{background:var(--accent-tint); color:var(--accent)}
+.scorebar{display:flex; align-items:center; gap:8px; min-width:150px}
+.scorebar i{display:block; height:8px; border-radius:4px; background:var(--bar)}
+.scorebar span{font-family:var(--mono); font-size:13px; color:var(--ink-soft)}
+.move{font-family:var(--mono); font-size:12px}
+.move.up{color:var(--good)} .move.down{color:var(--warn)}
+.tuner{display:grid; grid-template-columns:minmax(0,300px) minmax(0,1fr); gap:28px; align-items:start}
+@media (max-width:760px){.tuner{grid-template-columns:1fr}}
+.sliders{display:flex; flex-direction:column; gap:14px; background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:18px}
+.slider label{display:flex; justify-content:space-between; font-size:14px; font-weight:500}
+.slider label output{font-family:var(--mono); color:var(--accent)}
+.slider input{width:100%; accent-color:var(--accent)}
+.slider small{display:block; color:var(--muted); font-size:12px}
+button.reset{align-self:flex-start; font:inherit; font-size:14px; padding:6px 14px; border-radius:6px; border:1px solid var(--rule); background:var(--paper); color:var(--ink); cursor:pointer}
+button.reset:focus-visible,input:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.days{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px}
+.day{border-radius:8px; padding:10px 12px; display:flex; flex-direction:column; gap:2px}
+.day.w1{background:var(--ink); color:var(--paper)}
+.day.w2{background:var(--blue-tint); color:var(--ink)}
+.day small{font-family:var(--mono); font-size:12px; opacity:.8}
+.day b{font-size:15px}
+.day span{font-size:12px; opacity:.85}
+.note{font-size:14px; color:var(--muted)}
+.steps{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; counter-reset:s; list-style:none; padding:0; margin:0}
+.steps li{background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:4px}
+.steps li b{font-size:15px}
+.steps li b::before{counter-increment:s; content:counter(s) " · "; color:var(--accent); font-family:var(--mono)}
+.steps li span{font-size:14px; color:var(--ink-soft)}
+.twocol{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px}
+.panel{background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:18px 20px; display:flex; flex-direction:column; gap:10px}
+ul,ol{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px}
+a{color:var(--blue)}
+footer{font-size:13px; color:var(--muted); border-top:1px solid var(--rule); padding-top:18px; display:flex; flex-direction:column; gap:6px}
+</style>
+
+<div class="wrap">
+  <header class="head" style="gap:16px">
+    <span class="eyebrow">Fairway Business Operations case · Autofill launch</span>
+    <h1>Calibrate Autofill where our customers already file</h1>
+    <p class="lede">Autofill has zero mapped forms and one calibrator doing one form a day. The first month should buy traction: live customers filing real paperwork through Autofill. So the order follows existing-customer usage, led by our biggest account, then the promises we've already made. Pipeline dollars and market size only break ties.</p>
+    <div class="facts">
+      <div class="fact"><b>68%</b><span>of recent transactions come from customer 87</span></div>
+      <div class="fact"><b>4</b><span>states promised to existing customers</span></div>
+      <div class="fact"><b>55%</b><span>of volume live after 6 forms</span></div>
+      <div class="fact"><b>72.5%</b><span>covered by the top 10 in 20 days</span></div>
+    </div>
+  </header>
+
+  <section id="top10">
+    <div class="head">
+      <span class="eyebrow">Part 1 · Recommendation</span>
+      <h2>Top 10 states, in order</h2>
+      <p>Move the weights to see how the order responds. The arrows compare each state with the recommended weights.</p>
+    </div>
+    <div class="tuner">
+      <div class="sliders" id="sliders"></div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>#</th><th>State</th><th class="num">Transactions</th><th class="num">From customer 87</th><th>Score</th><th></th></tr></thead>
+          <tbody id="rankbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">Why each state</span>
+      <h2>The reasoning behind the base order</h2>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>#</th><th>State</th><th>Why it's here</th></tr></thead>
+        <tbody>
+          <tr><td class="rank">1</td><td class="state">Texas <span class="tag promise">TX first</span></td><td>64 of 200 transactions, from 3 existing customers. D02 (80%, pricing agreed) wants Texas live first, and the D03 POC ($420k) is scored on Autofill accuracy.</td></tr>
+          <tr><td class="rank">2</td><td class="state">Alabama <span class="tag promise">Q4 promise</span></td><td>Customer 87's #2 state (13 transactions, mostly used vehicles). D09 is signed, with Autofill promised for Q4.</td></tr>
+          <tr><td class="rank">3</td><td class="state">Arizona</td><td>14 transactions from customers 87 and 90. Part of D02 at 80%.</td></tr>
+          <tr><td class="rank">4</td><td class="state">Georgia <span class="tag promise">Q4 promise</span></td><td>9 transactions from customer 87. D09 signed, Q4 promise.</td></tr>
+          <tr><td class="rank">5</td><td class="state">Florida</td><td>19 transactions; customer 121 files only here. Part of D02 at 80%.</td></tr>
+          <tr><td class="rank">6</td><td class="state">Tennessee <span class="tag promise">Q4 promise</span></td><td>Only 3 transactions, but it's a contractual Q4 promise to a signed customer.</td></tr>
+          <tr><td class="rank">7</td><td class="state">Colorado</td><td>13 transactions from customer 87 and no commitment. A pure usage pick.</td></tr>
+          <tr><td class="rank">8</td><td class="state">Virginia <span class="tag pipe">pipeline pick</span></td><td>The one exception to usage: D07 ($1.5M, 75%) says Autofill is a must-have to sign. 1 transaction today. If we want pure traction, swap in Arkansas.</td></tr>
+          <tr><td class="rank">9</td><td class="state">California</td><td>4 transactions from customer 87. The largest US market breaks the tie with PA, IL and AR.</td></tr>
+          <tr><td class="rank">10</td><td class="state">Pennsylvania</td><td>5 transactions from customer 87. D19 was lost for lacking Autofill; D20 is in legal review at 60%.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">The plan · one form per day</span>
+      <h2>Main forms first, then the rest</h2>
+      <p>Each state is assumed to need two forms: a new-vehicle title and a used or transfer title. Wave 1 calibrates the busier form in each state (Texas gets both). Wave 2 finishes the rest by volume.</p>
+    </div>
+    <div class="days" id="days"></div>
+    <p class="note">Dark = wave 1, light = wave 2. The coverage figure is the share of the 200 recent transactions that can run through Autofill by the end of that day.</p>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">How the data was weighed</span>
+      <h2>85% of the score comes from customers we already have</h2>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Component</th><th class="num">Weight</th><th>What it measures</th></tr></thead>
+        <tbody>
+          <tr><td class="state">Existing-customer volume</td><td class="num">45%</td><td>The state's share of the 200 recent transactions</td></tr>
+          <tr><td class="state">Anchor customer 87</td><td class="num">20%</td><td>Our biggest account's transactions. They use Audit in 30+ states and have an open Autofill expansion (D01).</td></tr>
+          <tr><td class="state">Commitments</td><td class="num">20%</td><td>1.0 for the TX-first ask (D02) and the signed Q4 promise (D09: GA, AL, TN); 0.8 for FL and AZ (D02 at 80%)</td></tr>
+          <tr><td class="state">Autofill pipeline</td><td class="num">10%</td><td>Annual value × rep probability × haircut, Autofill deals only, split evenly across the deal's states</td></tr>
+          <tr><td class="state">Market size</td><td class="num">5%</td><td>Average of FHWA 2023 registrations and 2025 new-vehicle sales, each scaled to the largest state</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="twocol">
+      <div class="panel">
+        <h3>Pipeline adjustments</h3>
+        <ul>
+          <li><b>D10, $2.5M:</b> excluded. It's Audit only, so it needs no Autofill forms.</li>
+          <li><b>D08, $2.0M:</b> 50% haircut. It depends on a state fee bill passing.</li>
+          <li><b>D06, $1.2M:</b> 25% haircut. The close date has passed, and it's been stuck in legal since May.</li>
+          <li><b>D05, $900K:</b> 50% haircut. It's at Discovery, and the amount is the rep's guess.</li>
+          <li><b>D19:</b> lost because we had no Autofill. That's a demand signal for NY, NJ and PA.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>How much to trust it</h3>
+        <ul>
+          <li>Moving each weight ±10 points (11 scenarios): 8 states stay in the top 10 every time. CA is in 10 of 11, VA in 9, and Arkansas swaps in 3 times.</li>
+          <li>Only 5 days of transactions, including a weekend.</li>
+          <li>One customer is 68% of the sample. That's intended, but it's also concentration risk.</li>
+          <li>The number of forms per state is assumed, not known.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">Part 2 · Customer feedback</span>
+      <h2>Nothing changes until it's verified and scoped</h2>
+      <p>Feedback is a signal, not an instruction. Some comments are mapping errors, some are extraction bugs, some are one clerk's preference, and some contradict each other.</p>
+    </div>
+    <ol class="steps">
+      <li><b>Capture</b><span>Log each comment against its form, field, transaction and customer</span></li>
+      <li><b>Classify</b><span>Mapping, condition, preference, extraction, form version or conflict</span></li>
+      <li><b>Verify</b><span>Check the DMV rule and the source documents first</span></li>
+      <li><b>Scope</b><span>Global state rule, or a per-customer override</span></li>
+      <li><b>Change</b><span>Edit the mapping record, with the reason and a link to the comment</span></li>
+      <li><b>Test</b><span>Regression-test on past transactions for that form</span></li>
+      <li><b>Close the loop</b><span>Reply to the customer and track repeat errors per form</span></li>
+    </ol>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Comment</th><th>Category</th><th>What we do</th></tr></thead>
+        <tbody>
+          <tr><td>1 · Box 12 should be the lessor, not the lessee</td><td>Mapping error</td><td>Repoint the field for everyone; retest leased transactions</td></tr>
+          <tr><td>2 · Leave the odometer blank on new vehicles</td><td>State rule or preference</td><td>If the state exempts new vehicles, add a global condition. Otherwise it's a customer-level override.</td></tr>
+          <tr><td>3 · VIN has an O where it should be a 0</td><td>Extraction bug</td><td>Route to the AI team and add VIN validation (VINs never contain I, O or Q). No mapping edit.</td></tr>
+          <tr><td>4 · This is the old form version</td><td>Form version</td><td>Version the form record, re-map changed fields, recalibrate, and monitor DMV form changes</td></tr>
+          <tr><td>5 · Price should include dealer fees (a second clerk disagrees)</td><td>Conflicting</td><td>Hold. Check the state's definition of purchase price and get one answer from the customer's admin.</td></tr>
+          <tr><td>6 · Lienholder filled on a cash sale</td><td>Condition error</td><td>Fix the "only if financed" condition, or the input data if that shows a lien</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">Before committing</span>
+      <h2>What I'd want to know</h2>
+    </div>
+    <ol>
+      <li>How many forms each state really needs, and whether mappings can be reused across states.</li>
+      <li>Whether 5 days is representative. I'd want 3–6 months of history per customer and state.</li>
+      <li>Which states customer 87 would move to Autofill first under the D01 expansion.</li>
+      <li>Hard dates: the D09 Q4 deadline, the D03 POC scoring date, and when D07 needs Autofill live.</li>
+      <li>Whether Audit's existing state rule sets can speed up calibration.</li>
+      <li>Whether any DMV form changes are pending in the top 10 states.</li>
+    </ol>
+  </section>
+
+  <footer>
+    <span>Data: transactions.csv (200 rows, Sep 24–28 2026), sales_pipeline.csv (20 deals).</span>
+    <span>Market: <a href="https://www.fhwa.dot.gov/policyinformation/statistics/2023/pdf/mv1.pdf">FHWA Highway Statistics 2023, Table MV-1</a> · <a href="https://www.factorywarrantylist.com/car-sales-by-state.html">2025 new-vehicle sales by state (F&amp;I Tools)</a>.</span>
+    <span>The live model is Fairway_State_Prioritization.xlsx; the reasoning is in DECISIONS.md.</span>
+  </footer>
+</div>
+
+<script>
+const STATES = [["TX","Texas",64,19,1.0,1.0,1.0,0.1712,0.8204],["AL","Alabama",13,13,0.2031,0.6842,1.0,0.0396,0.1498],["AZ","Arizona",14,11,0.2188,0.5789,0.8,0.0895,0.2139],["GA","Georgia",9,9,0.1406,0.4737,1.0,0.034,0.2942],["FL","Florida",19,3,0.2969,0.1579,0.8,0.0528,0.727],["TN","Tennessee",3,3,0.0469,0.1579,1.0,0.034,0.2044],["CO","Colorado",13,13,0.2031,0.6842,0.0,0.0153,0.1454],["VA","Virginia",1,1,0.0156,0.0526,0.0,1.0,0.2294],["CA","California",4,4,0.0625,0.2105,0.0,0.0139,1.0],["PA","Pennsylvania",5,5,0.0781,0.2632,0.0,0.1133,0.3384],["AR","Arkansas",6,6,0.0938,0.3158,0.0,0.006,0.0914],["IL","Illinois",5,5,0.0781,0.2632,0.0,0.006,0.3234],["IN","Indiana",5,5,0.0781,0.2632,0.0,0.006,0.1643],["NJ","New Jersey",4,4,0.0625,0.2105,0.0,0.1133,0.2423],["NV","Nevada",4,4,0.0625,0.2105,0.0,0.0541,0.0869],["MO","Missouri",4,4,0.0625,0.2105,0.0,0.006,0.18],["NY","New York",3,3,0.0469,0.1579,0.0,0.0537,0.3994],["NH","New Hampshire",3,3,0.0469,0.1579,0.0,0.006,0.0507],["MD","Maryland",1,1,0.0156,0.0526,0.0,0.2865,0.1423],["SC","South Carolina",2,2,0.0312,0.1053,0.0,0.006,0.1502],["LA","Louisiana",2,2,0.0312,0.1053,0.0,0.0116,0.1333],["KY","Kentucky",2,2,0.0312,0.1053,0.0,0.006,0.1165],["WV","West Virginia",2,2,0.0312,0.1053,0.0,0.006,0.0465],["ME","Maine",2,2,0.0312,0.1053,0.0,0.006,0.0402],["OH","Ohio",1,1,0.0156,0.0526,0.0,0.006,0.3362],["NC","North Carolina",1,1,0.0156,0.0526,0.0,0.006,0.2745],["OK","Oklahoma",1,1,0.0156,0.0526,0.0,0.006,0.2239],["WI","Wisconsin",1,1,0.0156,0.0526,0.0,0.006,0.1637],["DE","Delaware",1,1,0.0156,0.0526,0.0,0.0656,0.0214],["IA","Iowa",1,1,0.0156,0.0526,0.0,0.006,0.0973],["MS","Mississippi",1,1,0.0156,0.0526,0.0,0.0116,0.0673],["NM","New Mexico",1,1,0.0156,0.0526,0.0,0.0153,0.0532],["WY","Wyoming",1,1,0.0156,0.0526,0.0,0.0153,0.0212],["DC","District of Columbia",1,1,0.0156,0.0526,0.0,0.0,0.0111],["MI","Michigan",0,0,0.0,0.0,0.0,0.0095,0.3215],["MA","Massachusetts",0,0,0.0,0.0,0.0,0.0537,0.18],["WA","Washington",0,0,0.0,0.0,0.0,0.0139,0.1995],["CT","Connecticut",0,0,0.0,0.0,0.0,0.0537,0.0876],["MN","Minnesota",0,0,0.0,0.0,0.0,0.006,0.1636],["OR","Oregon",0,0,0.0,0.0,0.0,0.0139,0.1125],["UT","Utah",0,0,0.0,0.0,0.0,0.0153,0.0907],["KS","Kansas",0,0,0.0,0.0,0.0,0.006,0.0686],["MT","Montana",0,0,0.0,0.0,0.0,0.0104,0.0571],["NE","Nebraska",0,0,0.0,0.0,0.0,0.006,0.0556],["ID","Idaho",0,0,0.0,0.0,0.0,0.006,0.0554],["HI","Hawaii",0,0,0.0,0.0,0.0,0.006,0.0388],["SD","South Dakota",0,0,0.0,0.0,0.0,0.006,0.032],["ND","North Dakota",0,0,0.0,0.0,0.0,0.006,0.0293],["RI","Rhode Island",0,0,0.0,0.0,0.0,0.006,0.0291],["VT","Vermont",0,0,0.0,0.0,0.0,0.006,0.0237],["AK","Alaska",0,0,0.0,0.0,0.0,0.006,0.02]];
+const COMPONENTS = [
+  {key:"volume", label:"Existing-customer volume", hint:"Share of the 200 transactions", base:45},
+  {key:"anchor", label:"Anchor customer 87", hint:"Our biggest account's transactions", base:20},
+  {key:"commitment", label:"Commitments", hint:"TX first (D02), Q4 promise (D09)", base:20},
+  {key:"pipeline", label:"Autofill pipeline", hint:"Probability-weighted, after haircuts", base:10},
+  {key:"market", label:"Market size", hint:"Registrations + new-vehicle sales", base:5},
+];
+const CALENDAR = [["TX","New",53,1,.265],["TX","Used",11,1,.32],["AL","Used",11,1,.375],["AZ","Used",11,1,.43],["GA","New",8,1,.47],["FL","New",16,1,.55],["TN","New",2,1,.56],["CO","New",9,1,.605],["VA","Used",1,1,.61],["CA","New",3,1,.625],["PA","Used",3,1,.64],["CO","Used",4,2,.66],["AZ","New",3,2,.675],["FL","Used",3,2,.69],["AL","New",2,2,.70],["PA","New",2,2,.71],["GA","Used",1,2,.715],["TN","Used",1,2,.72],["CA","Used",1,2,.725],["VA","New",0,2,.725]];
+
+const weights = Object.fromEntries(COMPONENTS.map(c => [c.key, c.base]));
+
+function ranked(w){
+  const total = Object.values(w).reduce((a,b)=>a+b,0) || 1;
+  return STATES.map(s => {
+    const score = (w.volume*s[4] + w.anchor*s[5] + w.commitment*s[6] + w.pipeline*s[7] + w.market*s[8]) / total;
+    return {abbr:s[0], name:s[1], tx:s[2], anchor:s[3], score};
+  }).sort((a,b) => b.score - a.score || b.tx - a.tx);
+}
+const baseRank = Object.fromEntries(ranked(weights).map((s,i) => [s.abbr, i+1]));
+
+function renderTable(){
+  const rows = ranked(weights).slice(0,12);
+  const max = rows[0].score || 1;
+  document.getElementById("rankbody").innerHTML = rows.map((s,i) => {
+    const b = baseRank[s.abbr], r = i+1, d = b - r;
+    const move = d > 0 ? `<span class="move up">▲ ${d}</span>` : d < 0 ? `<span class="move down">▼ ${-d}</span>` : "";
+    const cut = r === 10 ? ' style="border-bottom:2px solid var(--accent)"' : "";
+    return `<tr${cut}><td class="rank">${r}</td><td class="state">${s.name}</td><td class="num">${s.tx}</td><td class="num">${s.anchor}</td>
+      <td><div class="scorebar"><i style="width:${Math.max(2, s.score/max*110)}px"></i><span>${s.score.toFixed(3)}</span></div></td><td>${move}</td></tr>`;
+  }).join("");
+}
+
+function renderSliders(){
+  const box = document.getElementById("sliders");
+  const total = () => Object.values(weights).reduce((a,b)=>a+b,0) || 1;
+  box.innerHTML = COMPONENTS.map(c => `
+    <div class="slider">
+      <label for="w-${c.key}">${c.label}<output id="o-${c.key}"></output></label>
+      <input type="range" id="w-${c.key}" min="0" max="100" step="5" value="${weights[c.key]}">
+      <small>${c.hint}</small>
+    </div>`).join("") + `<button class="reset" id="reset" type="button">Reset to recommended</button>`;
+  const sync = () => COMPONENTS.forEach(c => {
+    document.getElementById(`o-${c.key}`).textContent = Math.round(weights[c.key]/total()*100) + "%";
+  });
+  COMPONENTS.forEach(c => document.getElementById(`w-${c.key}`).addEventListener("input", e => {
+    weights[c.key] = +e.target.value; sync(); renderTable();
+  }));
+  document.getElementById("reset").addEventListener("click", () => {
+    COMPONENTS.forEach(c => { weights[c.key] = c.base; document.getElementById(`w-${c.key}`).value = c.base; });
+    sync(); renderTable();
+  });
+  sync();
+}
+
+document.getElementById("days").innerHTML = CALENDAR.map((d,i) =>
+  `<div class="day w${d[3]}"><small>Day ${i+1}</small><b>${d[0]} ${d[1]} · ${d[2]} transactions</b><span>${(d[4]*100).toFixed(1)}% covered</span></div>`).join("");
+renderSliders();
+renderTable();
+</script>

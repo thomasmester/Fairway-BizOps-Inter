@@ -1,0 +1,198 @@
+deal_id,state,n_states,alloc_value
+D01,Alabama,50,2160.0
+D01,Alaska,50,2160.0
+D01,Arizona,50,2160.0
+D01,Arkansas,50,2160.0
+D01,California,50,2160.0
+D01,Colorado,50,2160.0
+D01,Connecticut,50,2160.0
+D01,Delaware,50,2160.0
+D01,Florida,50,2160.0
+D01,Georgia,50,2160.0
+D01,Hawaii,50,2160.0
+D01,Idaho,50,2160.0
+D01,Illinois,50,2160.0
+D01,Indiana,50,2160.0
+D01,Iowa,50,2160.0
+D01,Kansas,50,2160.0
+D01,Kentucky,50,2160.0
+D01,Louisiana,50,2160.0
+D01,Maine,50,2160.0
+D01,Maryland,50,2160.0
+D01,Massachusetts,50,2160.0
+D01,Michigan,50,2160.0
+D01,Minnesota,50,2160.0
+D01,Mississippi,50,2160.0
+D01,Missouri,50,2160.0
+D01,Montana,50,2160.0
+D01,Nebraska,50,2160.0
+D01,Nevada,50,2160.0
+D01,New Hampshire,50,2160.0
+D01,New Jersey,50,2160.0
+D01,New Mexico,50,2160.0
+D01,New York,50,2160.0
+D01,North Carolina,50,2160.0
+D01,North Dakota,50,2160.0
+D01,Ohio,50,2160.0
+D01,Oklahoma,50,2160.0
+D01,Oregon,50,2160.0
+D01,Pennsylvania,50,2160.0
+D01,Rhode Island,50,2160.0
+D01,South Carolina,50,2160.0
+D01,South Dakota,50,2160.0
+D01,Tennessee,50,2160.0
+D01,Texas,50,2160.0
+D01,Utah,50,2160.0
+D01,Vermont,50,2160.0
+D01,Virginia,50,2160.0
+D01,Washington,50,2160.0
+D01,West Virginia,50,2160.0
+D01,Wisconsin,50,2160.0
+D01,Wyoming,50,2160.0
+D02,Texas,3,40000.0
+D02,Florida,3,40000.0
+D02,Arizona,3,40000.0
+D03,Texas,1,147000.0
+D04,Florida,1,13000.0
+D05,California,5,9000.0
+D05,Oregon,5,9000.0
+D05,Washington,5,9000.0
+D05,Nevada,5,9000.0
+D05,Arizona,5,9000.0
+D06,Alabama,50,3000.0
+D06,Alaska,50,3000.0
+D06,Arizona,50,3000.0
+D06,Arkansas,50,3000.0
+D06,California,50,3000.0
+D06,Colorado,50,3000.0
+D06,Connecticut,50,3000.0
+D06,Delaware,50,3000.0
+D06,Florida,50,3000.0
+D06,Georgia,50,3000.0
+D06,Hawaii,50,3000.0
+D06,Idaho,50,3000.0
+D06,Illinois,50,3000.0
+D06,Indiana,50,3000.0
+D06,Iowa,50,3000.0
+D06,Kansas,50,3000.0
+D06,Kentucky,50,3000.0
+D06,Louisiana,50,3000.0
+D06,Maine,50,3000.0
+D06,Maryland,50,3000.0
+D06,Massachusetts,50,3000.0
+D06,Michigan,50,3000.0
+D06,Minnesota,50,3000.0
+D06,Mississippi,50,3000.0
+D06,Missouri,50,3000.0
+D06,Montana,50,3000.0
+D06,Nebraska,50,3000.0
+D06,Nevada,50,3000.0
+D06,New Hampshire,50,3000.0
+D06,New Jersey,50,3000.0
+D06,New Mexico,50,3000.0
+D06,New York,50,3000.0
+D06,North Carolina,50,3000.0
+D06,North Dakota,50,3000.0
+D06,Ohio,50,3000.0
+D06,Oklahoma,50,3000.0
+D06,Oregon,50,3000.0
+D06,Pennsylvania,50,3000.0
+D06,Rhode Island,50,3000.0
+D06,South Carolina,50,3000.0
+D06,South Dakota,50,3000.0
+D06,Tennessee,50,3000.0
+D06,Texas,50,3000.0
+D06,Utah,50,3000.0
+D06,Vermont,50,3000.0
+D06,Virginia,50,3000.0
+D06,Washington,50,3000.0
+D06,West Virginia,50,3000.0
+D06,Wisconsin,50,3000.0
+D06,Wyoming,50,3000.0
+D07,Virginia,1,1125000.0
+D08,Maryland,1,250000.0
+D09,Georgia,3,31666.666666666668
+D09,Alabama,3,31666.666666666668
+D09,Tennessee,3,31666.666666666668
+D10,Illinois,7,0.0
+D10,Indiana,7,0.0
+D10,Ohio,7,0.0
+D10,Michigan,7,0.0
+D10,Wisconsin,7,0.0
+D10,Missouri,7,0.0
+D10,Iowa,7,0.0
+D11,Michigan,1,4000.0
+D12,Colorado,4,10500.0
+D12,Utah,4,10500.0
+D12,Wyoming,4,10500.0
+D12,New Mexico,4,10500.0
+D13,North Carolina,2,0.0
+D13,South Carolina,2,0.0
+D14,New York,5,54000.0
+D14,New Jersey,5,54000.0
+D14,Pennsylvania,5,54000.0
+D14,Connecticut,5,54000.0
+D14,Massachusetts,5,54000.0
+D15,Louisiana,3,6416.666666666667
+D15,Mississippi,3,6416.666666666667
+D15,Alabama,3,6416.666666666667
+D16,Alabama,50,1600.0
+D16,Alaska,50,1600.0
+D16,Arizona,50,1600.0
+D16,Arkansas,50,1600.0
+D16,California,50,1600.0
+D16,Colorado,50,1600.0
+D16,Connecticut,50,1600.0
+D16,Delaware,50,1600.0
+D16,Florida,50,1600.0
+D16,Georgia,50,1600.0
+D16,Hawaii,50,1600.0
+D16,Idaho,50,1600.0
+D16,Illinois,50,1600.0
+D16,Indiana,50,1600.0
+D16,Iowa,50,1600.0
+D16,Kansas,50,1600.0
+D16,Kentucky,50,1600.0
+D16,Louisiana,50,1600.0
+D16,Maine,50,1600.0
+D16,Maryland,50,1600.0
+D16,Massachusetts,50,1600.0
+D16,Michigan,50,1600.0
+D16,Minnesota,50,1600.0
+D16,Mississippi,50,1600.0
+D16,Missouri,50,1600.0
+D16,Montana,50,1600.0
+D16,Nebraska,50,1600.0
+D16,Nevada,50,1600.0
+D16,New Hampshire,50,1600.0
+D16,New Jersey,50,1600.0
+D16,New Mexico,50,1600.0
+D16,New York,50,1600.0
+D16,North Carolina,50,1600.0
+D16,North Dakota,50,1600.0
+D16,Ohio,50,1600.0
+D16,Oklahoma,50,1600.0
+D16,Oregon,50,1600.0
+D16,Pennsylvania,50,1600.0
+D16,Rhode Island,50,1600.0
+D16,South Carolina,50,1600.0
+D16,South Dakota,50,1600.0
+D16,Tennessee,50,1600.0
+D16,Texas,50,1600.0
+D16,Utah,50,1600.0
+D16,Vermont,50,1600.0
+D16,Virginia,50,1600.0
+D16,Washington,50,1600.0
+D16,West Virginia,50,1600.0
+D16,Wisconsin,50,1600.0
+D16,Wyoming,50,1600.0
+D17,Arizona,2,45500.0
+D17,Nevada,2,45500.0
+D18,Montana,1,5000.0
+D19,New York,3,0.0
+D19,New Jersey,3,0.0
+D19,Pennsylvania,3,0.0
+D20,Pennsylvania,4,67500.0
+D20,New Jersey,4,67500.0
+D20,Delaware,4,67500.0
+D20,Maryland,4,67500.0
