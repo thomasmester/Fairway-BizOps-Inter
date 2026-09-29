@@ -31,6 +31,7 @@
   --critical-tint:#3A1D22; --high-tint:#3A2620; --medium-tint:#3A3020; --low-tint:#262B36;
 }
 *{box-sizing:border-box}
+[hidden]{display:none !important}
 body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.5}
 header{display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; padding:14px 20px; border-bottom:1px solid var(--rule); background:var(--card)}
 header h1{font-size:18px; margin:0; font-weight:600}
@@ -82,6 +83,40 @@ details p{margin:4px 0 0}
 .toast{background:var(--ink); color:var(--paper); padding:10px 14px; border-radius:8px; font-size:13px; box-shadow:0 6px 20px rgba(0,0,0,.25); border-left:4px solid var(--high)}
 .toast.critical{border-left-color:var(--critical)}
 @media (prefers-reduced-motion:no-preference){.toast{animation:in .2s ease-out}@keyframes in{from{transform:translateY(8px);opacity:0}}}
+.tabs{display:flex; gap:4px; background:var(--chip); padding:3px; border-radius:8px}
+.tabs button{border:0; background:transparent; padding:6px 12px}
+.tabs button[aria-selected="true"]{background:var(--card); color:var(--accent); font-weight:600; box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.hint{font-size:12px; color:var(--muted); margin:0}
+.call{display:flex; flex-direction:column; gap:8px}
+.callhead{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; font-size:12px}
+.callhead code,.mono{font-family:var(--mono); font-size:12px}
+.status-ok{color:#0a7f0a; font-weight:600} .status-bad{color:var(--critical); font-weight:600}
+pre{margin:4px 0 0; font-family:var(--mono); font-size:11.5px; line-height:1.45; background:var(--paper); border:1px solid var(--rule); border-radius:6px; padding:8px 10px; max-height:260px; overflow:auto; white-space:pre-wrap; word-break:break-word}
+#arch{padding:20px; display:flex; flex-direction:column; gap:20px; max-width:1180px; margin:0 auto}
+#arch h2{font-size:20px; margin:0}
+#arch h3{font-size:15px; margin:0}
+#arch p{margin:0; max-width:75ch; color:var(--ink-soft)}
+.diagram{overflow-x:auto; background:var(--card); border:1px solid var(--rule); border-radius:10px; padding:12px}
+.diagram svg{display:block; min-width:860px; width:100%; height:auto}
+.diagram .box{fill:var(--card); stroke:var(--rule); stroke-width:1.5}
+.diagram .box.api{fill:var(--paper)}
+.diagram .box.ext{stroke:var(--accent)}
+.diagram .step{fill:var(--card); stroke:var(--rule)}
+.diagram .t{fill:var(--ink); font:600 14px var(--sans)}
+.diagram .s{fill:var(--ink-soft); font:12.5px var(--sans)}
+.diagram .n{fill:var(--accent); font:600 12.5px var(--mono)}
+.diagram .lbl{fill:var(--muted); font:11.5px var(--mono)}
+.diagram .wire{stroke:var(--ink-soft); stroke-width:1.6; fill:none}
+.diagram .wire.dash{stroke-dasharray:5 4}
+.diagram marker path{fill:var(--ink-soft)}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px}
+.steps{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:8px; color:var(--ink-soft)}
+.steps b{color:var(--ink)}
+.tbl{overflow-x:auto}
+.tbl table{width:100%; border-collapse:collapse; font-size:13px}
+.tbl th{text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:6px 8px; border-bottom:1px solid var(--rule)}
+.tbl td{padding:7px 8px; border-bottom:1px solid var(--rule); vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
 </style>
 </head>
 <body>
@@ -91,16 +126,21 @@ details p{margin:4px 0 0}
     <div class="sub">Customer comments on filled forms, triaged by Claude and sorted by priority for the form editor.</div>
   </div>
   <div class="spacer"></div>
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button type="button" role="tab" id="tab-desk" aria-controls="desk" aria-selected="true">Review desk</button>
+    <button type="button" role="tab" id="tab-arch" aria-controls="arch" aria-selected="false">How it works</button>
+  </nav>
   <span class="pill" id="health"><span class="dot"></span><span>Checking API…</span></span>
   <label id="keywrap" hidden style="flex-direction:row; align-items:center; gap:6px">Access key
     <input id="accesskey" type="password" autocomplete="off" style="width:160px">
   </label>
 </header>
 
-<main>
+<main id="desk" role="tabpanel" aria-labelledby="tab-desk">
   <div style="display:flex; flex-direction:column; gap:20px">
     <form class="panel" id="form">
       <h2>New customer comment</h2>
+      <p class="hint">Nothing is scripted. Every comment, including one you type yourself, goes to Claude live, and the raw request and response appear below.</p>
       <label for="example">Load an example from the case
         <select id="example"><option value="">Choose an example…</option></select>
       </label>
@@ -116,13 +156,24 @@ details p{margin:4px 0 0}
         <label for="transaction">Transaction ID<input id="transaction" maxlength="60" placeholder="TX-10442"></label>
         <label for="submitter">Submitted by<input id="submitter" maxlength="120" placeholder="Title clerk"></label>
       </div>
-      <label for="comment">Comment<textarea id="comment" maxlength="2000" required placeholder="What's wrong with the filled form?"></textarea></label>
+      <label for="comment">Comment<textarea id="comment" maxlength="2000" required placeholder="Type any comment a clerk might leave, e.g. &quot;The buyer's county is blank even though it's in our upload.&quot;"></textarea></label>
       <div class="actions">
         <button class="primary" type="submit" id="submit">Triage comment</button>
+        <button type="button" id="writeown">Write your own</button>
         <button type="button" id="runall">Run all 7 examples</button>
       </div>
       <div class="msg" id="msg" role="status"></div>
     </form>
+
+    <section class="panel call" id="lastcall">
+      <h2>Last API call</h2>
+      <p class="hint" id="callempty">Submit a comment to see exactly what the page sent and what Claude returned.</p>
+      <div id="calldetail" hidden>
+        <div class="callhead"><code id="callline"></code><span id="callstatus"></span><span id="calltime"></span><span id="callmodel"></span></div>
+        <details open><summary>Request body</summary><pre id="callreq"></pre></details>
+        <details><summary>Claude's verdict (raw JSON)</summary><pre id="callres"></pre></details>
+      </div>
+    </section>
 
     <section class="panel">
       <h2>Editor notifications</h2>
@@ -136,6 +187,112 @@ details p{margin:4px 0 0}
   </div>
 
   <section class="board" id="board" aria-label="Tickets by priority"></section>
+</main>
+
+<main id="arch" role="tabpanel" aria-labelledby="tab-arch" hidden>
+  <div style="display:flex; flex-direction:column; gap:6px">
+    <h2>How the Review Desk works</h2>
+    <p>One Flask service on Render sits between the people and Claude. Clerks' comments come in, Claude turns each one into a structured verdict, and the form editor gets a queue sorted by priority. Nothing on the board is precomputed: every ticket is a live Claude call.</p>
+  </div>
+
+  <div class="diagram">
+    <svg viewBox="0 0 1000 372" role="img" aria-labelledby="archtitle">
+      <title id="archtitle">Architecture: the browser posts comments to the Flask API, which asks Claude for a verdict, saves the ticket in SQLite and notifies the editor board and an optional webhook.</title>
+      <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z"/></marker></defs>
+
+      <rect class="box" x="16" y="42" width="214" height="96" rx="10"/>
+      <text class="t" x="32" y="70">Demo page</text>
+      <text class="s" x="32" y="92">A clerk submits a comment</text>
+      <text class="s" x="32" y="112">with its form and field</text>
+
+      <rect class="box" x="16" y="236" width="214" height="112" rx="10"/>
+      <text class="t" x="32" y="264">Review board</text>
+      <text class="s" x="32" y="286">The form editor works the</text>
+      <text class="s" x="32" y="304">queue by priority</text>
+      <text class="lbl" x="32" y="328">polls every 6 s</text>
+
+      <rect class="box api" x="300" y="14" width="392" height="344" rx="12"/>
+      <text class="t" x="318" y="42">Flask API · Render</text>
+      <text class="lbl" x="560" y="42">app.py</text>
+      <rect class="step" x="318" y="60" width="356" height="44" rx="8"/><text class="n" x="332" y="87">1</text><text class="s" x="352" y="87">Validate input and access key</text>
+      <rect class="step" x="318" y="114" width="356" height="44" rx="8"/><text class="n" x="332" y="141">2</text><text class="s" x="352" y="141">Load open tickets, same customer + form</text>
+      <rect class="step" x="318" y="168" width="356" height="44" rx="8"/><text class="n" x="332" y="195">3</text><text class="s" x="352" y="195">triage.py: ask Claude for a JSON verdict</text>
+      <rect class="step" x="318" y="222" width="356" height="44" rx="8"/><text class="n" x="332" y="249">4</text><text class="s" x="352" y="249">store.py: save ticket, link conflicts</text>
+      <rect class="step" x="318" y="276" width="356" height="44" rx="8"/><text class="n" x="332" y="303">5</text><text class="s" x="352" y="303">notify.py: editor feed + webhook</text>
+
+      <rect class="box ext" x="772" y="30" width="212" height="112" rx="10"/>
+      <text class="t" x="788" y="58">Anthropic API</text>
+      <text class="s" x="788" y="80">Claude Opus 5</text>
+      <text class="s" x="788" y="100">JSON schema output</text>
+      <text class="s" x="788" y="120">server-side fallbacks</text>
+
+      <rect class="box" x="772" y="170" width="212" height="76" rx="10"/>
+      <text class="t" x="788" y="198">SQLite</text>
+      <text class="s" x="788" y="220">tickets · notifications</text>
+
+      <rect class="box" x="772" y="272" width="212" height="76" rx="10"/>
+      <text class="t" x="788" y="300">Slack / Teams webhook</text>
+      <text class="s" x="788" y="322">high + critical only (optional)</text>
+
+      <path class="wire" d="M230 82 H316" marker-end="url(#arrow)"/>
+      <text class="lbl" x="236" y="74">POST</text>
+      <path class="wire" d="M674 184 H720 V78 H770" marker-end="url(#arrow)"/>
+      <path class="wire dash" d="M770 106 H734 V198 H676" marker-end="url(#arrow)"/>
+      <text class="lbl" x="680" y="214">verdict</text>
+      <path class="wire" d="M674 244 H748 V208 H770" marker-end="url(#arrow)"/>
+      <path class="wire" d="M674 298 H770" marker-end="url(#arrow)"/>
+      <path class="wire" d="M316 298 H232" marker-end="url(#arrow)"/>
+      <text class="lbl" x="256" y="290">GET</text>
+    </svg>
+  </div>
+
+  <div class="grid2">
+    <section class="panel">
+      <h3>What happens to one comment</h3>
+      <ol class="steps">
+        <li><b>Capture.</b> The page sends <span class="mono">POST /api/feedback</span> with the comment, customer, state, form and field. The API checks lengths and, when set, the access key.</li>
+        <li><b>Context.</b> The API loads the open tickets for the same customer and form, so Claude can spot a comment that contradicts an earlier one.</li>
+        <li><b>Classify.</b> <span class="mono">triage.py</span> sends the comment and that context to Claude Opus 5 with a fixed JSON schema. Claude returns intent, category, priority, route, fix and what to verify.</li>
+        <li><b>Store.</b> The ticket is saved in SQLite. If Claude flagged a conflict, both tickets are linked. Ticket IDs Claude didn't receive are discarded.</li>
+        <li><b>Notify.</b> Every ticket posts to the editor feed. High and critical tickets also go to the webhook when one is configured.</li>
+        <li><b>Work the queue.</b> The board polls <span class="mono">/api/queue</span> and the editor acknowledges or resolves tickets with <span class="mono">PATCH /api/tickets/&lt;id&gt;</span>.</li>
+      </ol>
+    </section>
+    <section class="panel">
+      <h3>What Claude returns</h3>
+      <div class="tbl"><table>
+        <tr><th>Field</th><th>Values</th></tr>
+        <tr><td class="mono">category</td><td>mapping error, fill rule error, customer preference, extraction error, form version, conflicting, unclear, not an error</td></tr>
+        <tr><td class="mono">priority</td><td>critical, high, medium, low</td></tr>
+        <tr><td class="mono">route_to</td><td>form editor, extraction team, forms team, account owner</td></tr>
+        <tr><td class="mono">scope</td><td>all customers, this customer only, verify first</td></tr>
+        <tr><td class="mono">error_summary, suggested_fix, verification_step</td><td>Plain-language text for the editor</td></tr>
+        <tr><td class="mono">conflicts_with</td><td>IDs of open tickets this comment contradicts</td></tr>
+        <tr><td class="mono">intent, confidence</td><td>What the customer wants; high, medium or low</td></tr>
+      </table></div>
+    </section>
+    <section class="panel">
+      <h3>Priority rules given to Claude</h3>
+      <div class="tbl"><table>
+        <tr><th>Priority</th><th>Meaning</th></tr>
+        <tr><td>Critical</td><td>Every filing on the form is at risk, e.g. an outdated form version</td></tr>
+        <tr><td>High</td><td>A legally significant field is wrong: party names, VIN, lienholder, odometer, price</td></tr>
+        <tr><td>Medium</td><td>A decision is needed first: preferences, conflicts, unconfirmed state rules</td></tr>
+        <tr><td>Low</td><td>Cosmetic issues and questions</td></tr>
+      </table></div>
+    </section>
+    <section class="panel">
+      <h3>Endpoints</h3>
+      <div class="tbl"><table>
+        <tr><th>Call</th><th>Purpose</th></tr>
+        <tr><td class="mono">POST /api/feedback</td><td>Triage a comment, create a ticket</td></tr>
+        <tr><td class="mono">GET /api/queue</td><td>Open tickets grouped by priority</td></tr>
+        <tr><td class="mono">PATCH /api/tickets/&lt;id&gt;</td><td>Acknowledge, resolve or reopen</td></tr>
+        <tr><td class="mono">GET /api/notifications</td><td>Editor feed, <span class="mono">?since=</span> for new items</td></tr>
+        <tr><td class="mono">GET /api/health</td><td>Model and key status</td></tr>
+      </table></div>
+    </section>
+  </div>
 </main>
 
 <div class="toasts" id="toasts" aria-live="polite"></div>
@@ -184,8 +341,35 @@ async function api(path, opts = {}){
   const res = await fetch(path, {...opts, headers});
   if (res.status === 204) return null;
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  if (!res.ok){ const e = new Error(data.error || `Request failed (${res.status})`); e.status = res.status; throw e; }
   return data;
+}
+
+function showTab(name){
+  const arch = name === "arch";
+  $("desk").hidden = arch; $("arch").hidden = !arch;
+  $("tab-desk").setAttribute("aria-selected", String(!arch)); $("tab-arch").setAttribute("aria-selected", String(arch));
+  history.replaceState(null, "", arch ? "#how-it-works" : "#");
+}
+$("tab-desk").addEventListener("click", () => showTab("desk"));
+$("tab-arch").addEventListener("click", () => showTab("arch"));
+if (location.hash === "#how-it-works") showTab("arch");
+
+function recordCall(payload, status, body, ms){
+  $("callempty").hidden = true; $("calldetail").hidden = false;
+  $("callline").textContent = "POST /api/feedback";
+  const ok = status === 201;
+  $("callstatus").className = ok ? "status-ok" : "status-bad";
+  $("callstatus").textContent = ok ? "201 Created" : String(status);
+  $("calltime").textContent = ok && body.triage_ms != null
+    ? `Claude took ${(body.triage_ms/1000).toFixed(1)} s · round trip ${(ms/1000).toFixed(1)} s`
+    : `round trip ${(ms/1000).toFixed(1)} s`;
+  $("callmodel").textContent = ok && body.triage?.model ? `answered by ${body.triage.model}` : "";
+  const sent = Object.fromEntries(Object.entries(payload).filter(([, v]) => v !== ""));
+  $("callreq").textContent = JSON.stringify(sent, null, 2);
+  $("callres").textContent = JSON.stringify(ok
+    ? {ticket: body.id, open_tickets_sent_as_context: body.open_tickets_sent, verdict: body.triage}
+    : body, null, 2);
 }
 
 function setMsg(text, isErr){ const m = $("msg"); m.textContent = text; m.className = "msg" + (isErr ? " err" : ""); }
@@ -204,10 +388,21 @@ function payloadFromForm(){
 }
 
 async function submit(payload){
-  const t = await api("/api/feedback", {method:"POST", body:JSON.stringify(payload)});
+  const started = performance.now();
+  let t;
+  try { t = await api("/api/feedback", {method:"POST", body:JSON.stringify(payload)}); }
+  catch (err) { recordCall(payload, err.status || "network error", {error: err.message}, performance.now() - started); throw err; }
+  recordCall(payload, 201, t, performance.now() - started);
   await refresh();
   return t;
 }
+
+$("writeown").addEventListener("click", () => {
+  ["customer","state","formname","field","transaction","submitter","comment"].forEach(id => { $(id).value = ""; });
+  $("example").value = "";
+  $("comment").focus();
+  setMsg("Type any comment, with or without the context fields. Claude reads it live.");
+});
 
 $("form").addEventListener("submit", async e => {
   e.preventDefault();
@@ -217,7 +412,7 @@ $("form").addEventListener("submit", async e => {
   try {
     const t = await submit(payload);
     setMsg(`${t.id} filed as ${t.priority.toUpperCase()} · ${CATEGORY[t.category] || t.category}.`);
-    $("comment").value = ""; $("example").value = "";
+    $("example").value = "";
   } catch (err) { setMsg(err.message, true); }
   finally { $("submit").disabled = false; }
 });

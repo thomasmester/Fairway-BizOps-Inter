@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fairway Autofill Rollout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+:root{color-scheme:dark}
+html,body{height:100%}
+body{margin:0; background:#0B1020; overflow:hidden; font-family:'IBM Plex Sans', Arial, sans-serif}
+.stage{position:absolute; left:50%; top:50%; width:1920px; height:1080px;
+  transform:translate(-50%,-50%) scale(var(--s,0.5)); transform-origin:center; box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.stage > section{position:absolute; inset:0; width:1920px; height:1080px; box-sizing:border-box; overflow:hidden;
+  opacity:0; visibility:hidden; transition:opacity .35s ease, visibility 0s linear .35s}
+.stage > section.active{opacity:1; visibility:visible; transition:opacity .35s ease}
+.stage section *{box-sizing:border-box; margin:0}
+.stage section h1{font-size:96px; font-weight:600; line-height:1.1}
+.stage section h2{font-size:64px; font-weight:600; line-height:1.15}
+.stage section h3{font-size:44px; font-weight:600; line-height:1.2}
+.stage section p{font-size:32px; line-height:1.4}
+.stage section ul,.stage section ol{padding-left:1.2em; line-height:1.4}
+.stage section table{border-collapse:collapse; width:100%}
+.stage section th,.stage section td{padding:.35em .6em; border-bottom:1px solid rgba(20,33,61,.18); text-align:left; vertical-align:top}
+.stage section th{font-weight:600}
+.stage section svg{display:block; flex:none}
+.stage section aside{display:none}
+.bar{position:fixed; right:16px; bottom:calc(14px + env(safe-area-inset-bottom,0px)); display:flex; align-items:center; gap:6px;
+  background:rgba(11,16,32,.72); color:#E8ECF4; border-radius:999px; padding:4px 6px; font:500 13px 'IBM Plex Sans', Arial, sans-serif;
+  opacity:.25; transition:opacity .2s}
+.bar:hover,.bar:focus-within,body.show-bar .bar{opacity:1}
+.bar button{font:inherit; color:inherit; background:transparent; border:0; border-radius:999px; padding:6px 10px; cursor:pointer}
+.bar button:hover{background:rgba(255,255,255,.12)}
+.bar button:focus-visible{outline:2px solid #F0A263}
+.bar .count{min-width:64px; text-align:center; font-variant-numeric:tabular-nums}
+.notes{position:fixed; left:16px; right:16px; bottom:calc(64px + env(safe-area-inset-bottom,0px)); max-width:760px; margin:0 auto;
+  background:rgba(11,16,32,.92); color:#E8ECF4; border-radius:12px; padding:14px 18px; font:15px/1.55 'IBM Plex Sans', Arial, sans-serif}
+.notes b{color:#F0A263; font-weight:600; letter-spacing:.06em; text-transform:uppercase; font-size:12px; display:block; margin-bottom:4px}
+@media (prefers-reduced-motion:reduce){.stage > section{transition:none}}
+@media print{
+  @page{size:1920px 1080px; margin:0}
+  html,body{height:auto; overflow:visible; background:#fff}
+  .stage{position:static; transform:none; box-shadow:none; width:auto; height:auto}
+  .stage > section{position:relative; opacity:1; visibility:visible; page-break-after:always; break-after:page}
+  .bar,.notes{display:none}
+}
+</style>
+</head>
+<body>
+<main class="stage" aria-roledescription="slide deck">
+<section id="cover" data-transition="fade" style="background:#14213D; color:#F7F6F2; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; justify-content:space-between; gap:48px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#E8964F; font-weight:600">Fairway Business Operations case</p>
+<div style="display:flex; flex-direction:column; gap:40px">
+<h1 style="font-family:'Source Serif 4', Georgia, serif; font-size:96px; font-weight:600; line-height:1.08; width:1500px">Calibrate Autofill where our customers already file</h1>
+<p style="font-size:40px; color:#C9D2E3; width:1400px">Part 1: which 10 states to map first, and in what order. Part 2: how customer feedback becomes mapping changes.</p>
+</div>
+<div style="display:flex; gap:64px">
+<p style="font-size:30px; color:#C9D2E3"><b style="color:#F7F6F2">200</b> recent transactions</p>
+<p style="font-size:30px; color:#C9D2E3"><b style="color:#F7F6F2">20</b> pipeline deals</p>
+<p style="font-size:30px; color:#C9D2E3"><b style="color:#F7F6F2">1</b> form per day of capacity</p>
+</div>
+<aside>Frame: Autofill has zero mapped forms and one calibrator. The question is where the first 20 working days go. My answer optimizes for traction with existing customers, and the reasoning is all in the workbook and DECISIONS.md.</aside>
+</section>
+<section id="thesis" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:56px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">The thesis</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15; width:1600px">A new product needs traction first: live customers filing real paperwork through it</h2>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px; background:#FFFFFF; border:1px solid #DAD6CC; border-radius:12px; padding:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:96px; font-weight:600; color:#B85C1E; line-height:1.1">68%</p>
+<p style="font-size:30px; color:#3E4A63">of recent transactions come from customer 87, our biggest account. They already use Audit in 30+ states.</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FFFFFF; border:1px solid #DAD6CC; border-radius:12px; padding:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:96px; font-weight:600; color:#B85C1E; line-height:1.1">4</p>
+<p style="font-size:30px; color:#3E4A63">states carry explicit promises to existing customers: TX first (D02), and GA, AL, TN by Q4 (D09, signed).</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:12px; background:#FFFFFF; border:1px solid #DAD6CC; border-radius:12px; padding:40px">
+<p style="font-family:'Source Serif 4', Georgia, serif; font-size:96px; font-weight:600; color:#B85C1E; line-height:1.1">72.5%</p>
+<p style="font-size:30px; color:#3E4A63">of recent transactions are covered by the top 10 states once their forms are calibrated.</p>
+</div>
+</div>
+<p style="font-size:30px; color:#3E4A63; width:1500px">Existing customers give fast feedback, prove accuracy and become references. Pipeline dollars and market size break ties; they don't set the order.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Source: transactions.csv (200 rows, Sep 24–28 2026) and sales_pipeline.csv</p>
+<aside>The key judgment: optimize the first calibration month for usage and trust, not for the biggest number in the CRM. Existing customers are already paying, already file in these states and can give calibration feedback immediately.</aside>
+</section>
+<section id="volume" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:56px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Where the volume comes from</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15">One customer and one state carry most of today's paperwork</h2>
+</div>
+<div style="display:flex; gap:64px">
+<div style="flex:1; display:flex; flex-direction:column; gap:28px">
+<h3 style="font-size:36px; font-weight:600">200 recent transactions, by customer</h3>
+<div style="display:flex; align-items:center; gap:40px">
+<svg aria-label="Pie chart of 200 transactions by customer: customer 87 has 136 (68%), customer 110 has 45 (22.5%), customer 121 has 16 (8%), customer 90 has 3 (1.5%)" width="320" height="320" viewBox="0 0 320 320"><path d="M160 160 L160.0 6.0 A154 154 0 1 1 20.7 225.6 Z" fill="#2a78d6" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L20.7 225.6 A154 154 0 0 1 73.4 32.6 Z" fill="#eb6834" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L73.4 32.6 A154 154 0 0 1 145.5 6.7 Z" fill="#1baf7a" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L145.5 6.7 A154 154 0 0 1 160.0 6.0 Z" fill="#eda100" stroke="#F7F6F2" stroke-width="3"/></svg>
+<div style="display:flex; flex-direction:column; gap:16px">
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#2a78d6; border-radius:4px"></div><p style="font-size:26px">Customer 87 · <b>136</b> (68%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#eb6834; border-radius:4px"></div><p style="font-size:26px">Customer 110 · <b>45</b> (22.5%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#1baf7a; border-radius:4px"></div><p style="font-size:26px">Customer 121 · <b>16</b> (8%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#eda100; border-radius:4px"></div><p style="font-size:26px">Customer 90 · <b>3</b> (1.5%)</p></div>
+</div>
+</div>
+</div>
+<div style="flex:1; display:flex; flex-direction:column; gap:28px">
+<h3 style="font-size:36px; font-weight:600">The same 200, by state</h3>
+<div style="display:flex; align-items:center; gap:40px">
+<svg aria-label="Pie chart of 200 transactions by state: Texas 64 (32%), Florida 19 (9.5%), Arizona 14 (7%), Colorado 13 (6.5%), Alabama 13 (6.5%), 29 other states 77 (38.5%)" width="320" height="320" viewBox="0 0 320 320"><path d="M160 160 L160.0 6.0 A154 154 0 0 1 299.3 225.6 Z" fill="#2a78d6" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L299.3 225.6 A154 154 0 0 1 238.4 292.6 Z" fill="#eb6834" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L238.4 292.6 A154 154 0 0 1 174.5 313.3 Z" fill="#1baf7a" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L174.5 313.3 A154 154 0 0 1 112.4 306.5 Z" fill="#eda100" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L112.4 306.5 A154 154 0 0 1 58.2 275.5 Z" fill="#e87ba4" stroke="#F7F6F2" stroke-width="3"/><path d="M160 160 L58.2 275.5 A154 154 0 0 1 160.0 6.0 Z" fill="#C9C5BB" stroke="#F7F6F2" stroke-width="3"/></svg>
+<div style="display:flex; flex-direction:column; gap:12px">
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#2a78d6; border-radius:4px"></div><p style="font-size:26px">Texas · <b>64</b> (32%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#eb6834; border-radius:4px"></div><p style="font-size:26px">Florida · <b>19</b> (9.5%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#1baf7a; border-radius:4px"></div><p style="font-size:26px">Arizona · <b>14</b> (7%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#eda100; border-radius:4px"></div><p style="font-size:26px">Colorado · <b>13</b> (6.5%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#e87ba4; border-radius:4px"></div><p style="font-size:26px">Alabama · <b>13</b> (6.5%)</p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#C9C5BB; border-radius:4px"></div><p style="font-size:26px">29 others · <b>77</b> (38.5%)</p></div>
+</div>
+</div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Source: transactions.csv, Sep 24–28 2026. All four customers are existing Fairway customers.</p>
+<aside>Customer 87 is our anchor: two thirds of the volume, spread across 36 states. Customers 110 and 121 each file in one state, which is why Texas and Florida are so big. The long tail of 29 states is almost all customer 87.</aside>
+</section>
+<section id="weights" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:48px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 1 · How the data was weighed</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15">85% of the score comes from customers we already have</h2>
+</div>
+<div style="display:flex; align-items:center; gap:80px">
+<svg aria-label="Pie chart of score weights: existing-customer volume 45%, anchor customer 87 20%, commitments 20%, Autofill pipeline 10%, market size 5%" width="440" height="440" viewBox="0 0 440 440"><path d="M220 220 L220.0 6.0 A214 214 0 0 1 286.1 423.5 Z" fill="#2a78d6" stroke="#F7F6F2" stroke-width="3"/><path d="M220 220 L286.1 423.5 A214 214 0 0 1 46.9 345.8 Z" fill="#eb6834" stroke="#F7F6F2" stroke-width="3"/><path d="M220 220 L46.9 345.8 A214 214 0 0 1 46.9 94.2 Z" fill="#1baf7a" stroke="#F7F6F2" stroke-width="3"/><path d="M220 220 L46.9 94.2 A214 214 0 0 1 153.9 16.5 Z" fill="#eda100" stroke="#F7F6F2" stroke-width="3"/><path d="M220 220 L153.9 16.5 A214 214 0 0 1 220.0 6.0 Z" fill="#e87ba4" stroke="#F7F6F2" stroke-width="3"/></svg>
+<div style="flex:1; display:flex; flex-direction:column; gap:22px">
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#2a78d6; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>45%</b> · Existing-customer volume</p><p style="font-size:24px; color:#3E4A63">The state's share of the 200 recent transactions</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#eb6834; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>20%</b> · Anchor customer 87</p><p style="font-size:24px; color:#3E4A63">Our biggest account's transactions in the state</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#1baf7a; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>20%</b> · Commitments</p><p style="font-size:24px; color:#3E4A63">TX-first ask (D02); signed Q4 promise (D09)</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#eda100; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>10%</b> · Autofill pipeline</p><p style="font-size:24px; color:#3E4A63">Value x probability x haircut, Autofill deals only</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#e87ba4; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>5%</b> · Market size</p><p style="font-size:24px; color:#3E4A63">FHWA registrations + 2025 new-vehicle sales</p></div></div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Each component is scaled 0–1 against the top state, then weighted. All weights are editable in the Excel model.</p>
+<aside>Why a separate anchor component: volume alone over-indexes on TX and FL, where customers 110 and 121 file. Customer 87 brings us the most business elsewhere, so their states (AL, CO, GA) get lifted. Market size is 5% because it describes long-run TAM, not which form to calibrate this week. Market data: FHWA Highway Statistics 2023, Table MV-1, and F&amp;I Tools 2025 new-vehicle sales by state.</aside>
+</section>
+<section id="top10" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:112px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 1 · Recommendation</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Top 10 states, in order</h2>
+</div>
+<table style="font-size:24px; color:#14213D">
+<tr><th style="width:5%; text-align:right">#</th><th style="width:15%; text-align:left">State</th><th style="width:14%; text-align:right">Transactions</th><th style="width:17%; text-align:right">From customer 87</th><th style="width:49%; text-align:left">Why</th></tr>
+<tr style="background:#FBEBDD"><td style="text-align:right">1</td><td>Texas</td><td style="text-align:right">64</td><td style="text-align:right">19</td><td>Most usage; D02 wants Texas live first</td></tr>
+<tr><td style="text-align:right">2</td><td>Alabama</td><td style="text-align:right">13</td><td style="text-align:right">13</td><td>Anchor's #2 state; D09 signed, Q4 promise</td></tr>
+<tr><td style="text-align:right">3</td><td>Arizona</td><td style="text-align:right">14</td><td style="text-align:right">11</td><td>Customers 87 and 90; part of D02 at 80%</td></tr>
+<tr><td style="text-align:right">4</td><td>Georgia</td><td style="text-align:right">9</td><td style="text-align:right">9</td><td>Anchor usage; D09 signed, Q4 promise</td></tr>
+<tr><td style="text-align:right">5</td><td>Florida</td><td style="text-align:right">19</td><td style="text-align:right">3</td><td>Customer 121 files only here; D02 at 80%</td></tr>
+<tr><td style="text-align:right">6</td><td>Tennessee</td><td style="text-align:right">3</td><td style="text-align:right">3</td><td>Low usage, but a contractual Q4 promise</td></tr>
+<tr><td style="text-align:right">7</td><td>Colorado</td><td style="text-align:right">13</td><td style="text-align:right">13</td><td>Pure usage pick from the anchor account</td></tr>
+<tr style="background:#E4ECF4"><td style="text-align:right">8</td><td>Virginia</td><td style="text-align:right">1</td><td style="text-align:right">1</td><td>Pipeline pick: D07 $1.5M needs Autofill to sign</td></tr>
+<tr><td style="text-align:right">9</td><td>California</td><td style="text-align:right">4</td><td style="text-align:right">4</td><td>Largest US market breaks a usage tie</td></tr>
+<tr><td style="text-align:right">10</td><td>Pennsylvania</td><td style="text-align:right">5</td><td style="text-align:right">5</td><td>D19 lost for lacking Autofill; D20 at 60%</td></tr>
+</table>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Next in line: Arkansas (6 transactions, all from customer 87), then Illinois. Virginia is the one pick driven by pipeline rather than usage.</p>
+<aside>Walk the table top down. TX is unambiguous. AL, AZ, GA and FL are close together: they're usage plus commitments. TN is here only because we promised it to a signed customer. VA is the deliberate exception: it's a new logo with 1 transaction, but D07 is $1.5M at 75% and says Autofill is a must-have. If leadership wants pure traction, swap VA for Arkansas.</aside>
+</section>
+<section id="calendar" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:112px 128px 160px; display:flex; flex-direction:column; gap:32px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 1 · The plan, one form per day</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Main forms first: 55% of volume is live by day 6</h2>
+</div>
+<div style="display:flex; gap:56px">
+<div style="flex:1; display:grid; grid-template-columns:repeat(4, 1fr); gap:12px">
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 1</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">TX New · 53</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 2</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">TX Used · 11</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 3</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">AL Used · 11</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 4</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">AZ Used · 11</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 5</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">GA New · 8</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 6</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">FL New · 16</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 7</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">TN New · 2</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 8</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">CO New · 9</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 9</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">VA Used · 1</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 10</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">CA New · 3</p></div>
+<div style="background:#14213D; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#E8964F">Day 11</p><p style="font-size:28px; color:#F7F6F2; font-weight:600">PA Used · 3</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 12</p><p style="font-size:28px; font-weight:600">CO Used · 4</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 13</p><p style="font-size:28px; font-weight:600">AZ New · 3</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 14</p><p style="font-size:28px; font-weight:600">FL Used · 3</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 15</p><p style="font-size:28px; font-weight:600">AL New · 2</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 16</p><p style="font-size:28px; font-weight:600">PA New · 2</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 17</p><p style="font-size:28px; font-weight:600">GA Used · 1</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 18</p><p style="font-size:28px; font-weight:600">TN Used · 1</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 19</p><p style="font-size:28px; font-weight:600">CA Used · 1</p></div>
+<div style="background:#5598e7; border-radius:8px; padding:14px 20px"><p style="font-size:24px; color:#14213D">Day 20</p><p style="font-size:28px; font-weight:600">VA New · 0</p></div>
+</div>
+<div style="flex:none; width:420px; display:flex; flex-direction:column; gap:24px">
+<h3 style="font-size:30px; font-weight:600">Recent volume covered</h3>
+<svg aria-label="Pie chart of the 200 recent transactions: wave 1 forms cover 128 (64%), wave 2 forms add 17 (8.5%), 55 (27.5%) fall outside the top 10" width="360" height="360" viewBox="0 0 360 360"><path d="M180 180 L180.0 6.0 A174 174 0 1 1 45.9 290.9 Z" fill="#14213D" stroke="#F7F6F2" stroke-width="3"/><path d="M180 180 L45.9 290.9 A174 174 0 0 1 8.1 207.2 Z" fill="#5598e7" stroke="#F7F6F2" stroke-width="3"/><path d="M180 180 L8.1 207.2 A174 174 0 0 1 180.0 6.0 Z" fill="#C9C5BB" stroke="#F7F6F2" stroke-width="3"/></svg>
+<div style="display:flex; flex-direction:column; gap:10px">
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#14213D; border-radius:4px"></div><p style="font-size:24px">Wave 1, days 1–11 · <b>64%</b></p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#5598e7; border-radius:4px"></div><p style="font-size:24px">Wave 2, days 12–20 · <b>8.5%</b></p></div>
+<div style="display:flex; align-items:center; gap:16px"><div style="flex:none; width:24px; height:24px; background:#C9C5BB; border-radius:4px"></div><p style="font-size:24px">Outside the top 10 · <b>27.5%</b></p></div>
+</div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Number on each day = recent transactions for that form. Assumes 2 forms per state (new title; used/transfer title).</p>
+<aside>Sequence by form, not by state: the new/used mix differs a lot. TX is mostly new, while AZ and AL are mostly used. Wave 1 alone covers 64% of recent transactions. Wave 2 is small-volume cleanup, and it's where I'd reassess with real usage data before continuing.</aside>
+</section>
+<section id="pipeline" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:48px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 1 · Reading the pipeline critically</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15">The biggest deals on paper drive the least Autofill work</h2>
+</div>
+<table style="font-size:28px; color:#14213D">
+<tr><th style="width:10%; text-align:left">Deal</th><th style="width:16%; text-align:right">Value</th><th style="width:20%; text-align:left">Treatment</th><th style="width:54%; text-align:left">Why</th></tr>
+<tr><td>D10</td><td style="text-align:right">$2.5M</td><td>Excluded</td><td>Audit only: no Autofill forms needed</td></tr>
+<tr><td>D08</td><td style="text-align:right">$2.0M</td><td>50% haircut</td><td>Depends on a state fee bill passing</td></tr>
+<tr><td>D06</td><td style="text-align:right">$1.2M</td><td>25% haircut</td><td>Close date passed; stuck in legal since May</td></tr>
+<tr><td>D05</td><td style="text-align:right">$900K</td><td>50% haircut</td><td>Discovery; amount is the rep's guess</td></tr>
+<tr style="background:#E4ECF4"><td>D07</td><td style="text-align:right">$1.5M</td><td>Kept in full</td><td>75%, Autofill is a must-have: puts VA at #8</td></tr>
+</table>
+<p style="font-size:30px; color:#3E4A63; width:1600px">A signal we didn't score: D19 (NY, NJ, PA) was lost to a competitor because we had no Autofill.</p>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Pipeline value = annual value x rep probability x haircut, split evenly across the deal's states</p>
+<aside>This slide shows judgment on the CRM data. Taken at face value, the top 3 deals by value would pull the plan toward the Midwest and Maryland, and none of them would put forms into use soon.</aside>
+</section>
+<section id="pipelinemix" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:48px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 1 · After the haircuts</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15">Two fifths of the counted pipeline is one Virginia deal</h2>
+</div>
+<div style="display:flex; align-items:center; gap:96px">
+<svg aria-label="Pie chart of $2.83M adjusted Autofill pipeline: D07 Virginia $1.13M (40%), D14 and D20 Northeast fleets $540K (19%), D08 Maryland $250K (9%), D06 national fleet $150K (5%), 12 other deals $769K (27%)" width="500" height="500" viewBox="0 0 500 500"><path d="M250 250 L250.0 6.0 A244 244 0 0 1 397.2 444.6 Z" fill="#2a78d6" stroke="#F7F6F2" stroke-width="3"/><path d="M250 250 L397.2 444.6 A244 244 0 0 1 122.5 458.0 Z" fill="#eb6834" stroke="#F7F6F2" stroke-width="3"/><path d="M250 250 L122.5 458.0 A244 244 0 0 1 32.1 359.8 Z" fill="#1baf7a" stroke="#F7F6F2" stroke-width="3"/><path d="M250 250 L32.1 359.8 A244 244 0 0 1 8.2 282.6 Z" fill="#eda100" stroke="#F7F6F2" stroke-width="3"/><path d="M250 250 L8.2 282.6 A244 244 0 0 1 250.0 6.0 Z" fill="#C9C5BB" stroke="#F7F6F2" stroke-width="3"/></svg>
+<div style="flex:1; display:flex; flex-direction:column; gap:22px">
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#2a78d6; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>$1.13M · 40%</b> · D07, Virginia</p><p style="font-size:24px; color:#3E4A63">Dealer association, 75%, Autofill a must-have</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#eb6834; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>$540K · 19%</b> · D14 + D20, Northeast</p><p style="font-size:24px; color:#3E4A63">Two fleet deals across NY, NJ, PA, CT, MA, DE, MD</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#1baf7a; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>$250K · 9%</b> · D08, Maryland</p><p style="font-size:24px; color:#3E4A63">After a 50% haircut for the fee-bill risk</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#eda100; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>$150K · 5%</b> · D06, all 50 states</p><p style="font-size:24px; color:#3E4A63">After a 25% haircut; stuck in legal since May</p></div></div>
+<div style="display:flex; align-items:start; gap:20px"><div style="flex:none; width:28px; height:28px; background:#C9C5BB; border-radius:4px"></div><div style="display:flex; flex-direction:column; gap:4px"><p style="font-size:30px"><b>$769K · 27%</b> · 12 other deals</p><p style="font-size:24px; color:#3E4A63">Including D02 (TX, FL, AZ) and signed D09</p></div></div>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Adjusted value = annual value x rep probability x haircut. Total counted: $2.83M. D10 (Audit only) and closed-lost deals excluded.</p>
+<aside>This is why Virginia makes the list despite 1 transaction: it's the single biggest concentration of realistic Autofill pipeline. Pipeline is only 10% of the score, so it can't outrank real usage.</aside>
+</section>
+<section id="robustness" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:48px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 1 · How much to trust it</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15">The order holds when the weights move; the sample is the weak point</h2>
+</div>
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:48px">
+<div style="display:flex; flex-direction:column; gap:20px; background:#FFFFFF; border:1px solid #DAD6CC; border-radius:12px; padding:40px">
+<h3 style="font-size:36px; font-weight:600">Sensitivity: 11 weight scenarios</h3>
+<p style="font-size:28px; color:#3E4A63">Each weight moved ±10 points, the others rescaled.</p>
+<ul style="font-size:28px; color:#3E4A63; line-height:1.5">
+<li>8 states make the top 10 in every scenario</li>
+<li>California is in 10 of 11, Virginia in 9 of 11</li>
+<li>Arkansas swaps in 3 times; nothing else does</li>
+</ul>
+</div>
+<div style="display:flex; flex-direction:column; gap:20px; background:#FFFFFF; border:1px solid #DAD6CC; border-radius:12px; padding:40px">
+<h3 style="font-size:36px; font-weight:600">Data limits</h3>
+<ul style="font-size:28px; color:#3E4A63; line-height:1.5">
+<li>Only 5 days of transactions, including a weekend</li>
+<li>One customer is 68% of the sample</li>
+<li>Rep probabilities are self-reported</li>
+<li>Forms per state assumed to be 2</li>
+</ul>
+</div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Sensitivity from analysis.py; the Excel Weights tab re-ranks live</p>
+<aside>The ranking is robust to reasonable disagreement about the weights. What could really change it is better data: a longer transaction history and the actual form count per state.</aside>
+</section>
+<section id="feedbackflow" data-transition="fade" style="background:#14213D; color:#F7F6F2; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px 128px 160px; display:flex; flex-direction:column; gap:56px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#E8964F; font-weight:600">Part 2 · Feedback into mappings</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15">Seven steps; nothing changes until it's verified and scoped</h2>
+</div>
+<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:20px">
+<div style="display:flex; flex-direction:column; gap:8px; background:#22345A; border-radius:10px; padding:28px"><p style="font-size:24px; color:#E8964F; font-weight:600">1 · Capture</p><p style="font-size:26px; color:#DCE3EF">Log every comment against form, field, transaction and customer</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#22345A; border-radius:10px; padding:28px"><p style="font-size:24px; color:#E8964F; font-weight:600">2 · Classify</p><p style="font-size:26px; color:#DCE3EF">Mapping, condition, preference, extraction, form version or conflict</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#22345A; border-radius:10px; padding:28px"><p style="font-size:24px; color:#E8964F; font-weight:600">3 · Verify</p><p style="font-size:26px; color:#DCE3EF">Check the DMV rule and the source documents first</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#22345A; border-radius:10px; padding:28px"><p style="font-size:24px; color:#E8964F; font-weight:600">4 · Scope</p><p style="font-size:26px; color:#DCE3EF">Global state rule, or a per-customer override?</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#22345A; border-radius:10px; padding:28px"><p style="font-size:24px; color:#E8964F; font-weight:600">5 · Change</p><p style="font-size:26px; color:#DCE3EF">Edit the mapping record, with the reason and a link to the comment</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#22345A; border-radius:10px; padding:28px"><p style="font-size:24px; color:#E8964F; font-weight:600">6 · Test</p><p style="font-size:26px; color:#DCE3EF">Regression-test on past transactions for the form</p></div>
+<div style="display:flex; flex-direction:column; gap:8px; background:#22345A; border-radius:10px; padding:28px"><p style="font-size:24px; color:#E8964F; font-weight:600">7 · Close the loop</p><p style="font-size:26px; color:#DCE3EF">Reply to the customer; track the repeat-error rate per form</p></div>
+</div>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#A9B4C8">The full triage of all six example comments is in the workbook's Feedback Process tab</p>
+<aside>The core idea: feedback is a signal, not an instruction. Some comments are mapping errors, some are extraction bugs, some are customer preferences, and some are wrong. Verifying and scoping stop one clerk's habit from becoming a global rule.</aside>
+</section>
+<section id="triage" data-transition="fade" style="background:#F7F6F2; color:#14213D; font-family:'IBM Plex Sans', Arial, sans-serif; padding:112px 128px 160px; display:flex; flex-direction:column; gap:36px">
+<div style="display:flex; flex-direction:column; gap:12px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#B85C1E; font-weight:600">Part 2 · The six examples</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:56px; font-weight:600; line-height:1.15">Only half of them are mapping edits</h2>
+</div>
+<table style="font-size:24px; color:#14213D">
+<tr><th style="width:26%; text-align:left">Comment</th><th style="width:24%; text-align:left">Category</th><th style="width:50%; text-align:left">What we do</th></tr>
+<tr><td>1 · Lessor, not lessee</td><td>Mapping error</td><td>Repoint the field globally; retest leases</td></tr>
+<tr><td>2 · Blank odometer if new</td><td>Rule or preference</td><td>State exempts it: global rule. Else a customer override</td></tr>
+<tr><td>3 · VIN has O for 0</td><td>Extraction bug</td><td>Send to AI team; add VIN validation. No mapping edit</td></tr>
+<tr><td>4 · Old form version</td><td>Form version</td><td>Version the form, re-map, recalibrate; watch DMVs</td></tr>
+<tr><td>5 · Dealer fees, yes or no</td><td>Conflicting</td><td>Hold; check the state's price definition; one answer from the admin</td></tr>
+<tr><td>6 · Lien on a cash sale</td><td>Condition error</td><td>Fix the "only if financed" rule, or the input data</td></tr>
+</table>
+<p style="position:absolute; left:128px; bottom:64px; width:1664px; font-size:24px; color:#6B7488">Mapping or condition edits: 1, 6 and possibly 2. The rest go to extraction, forms or the customer.</p>
+<aside>Point out example 3: a VIN never contains O, I or Q, so this can be caught automatically with a validation rule. Example 5 is the most important process point: conflicting feedback never goes straight into a mapping.</aside>
+</section>
+<section id="questions" data-transition="fade" style="background:#B85C1E; color:#FFF8F0; font-family:'IBM Plex Sans', Arial, sans-serif; padding:128px; display:flex; flex-direction:column; gap:48px">
+<div style="display:flex; flex-direction:column; gap:16px">
+<p style="font-size:24px; letter-spacing:3px; text-transform:uppercase; color:#FFE3C8; font-weight:600">Before committing</p>
+<h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.15">What I'd want to know</h2>
+</div>
+<ol style="font-size:32px; line-height:1.5; color:#FFF8F0">
+<li>How many forms each state really needs, and can mappings be reused across states?</li>
+<li>Is 5 days representative? I'd want 3–6 months per customer and state</li>
+<li>Which states would customer 87 move to Autofill first under D01?</li>
+<li>Hard dates: the D09 Q4 deadline, the D03 POC scoring, D07's go-live need</li>
+<li>Can Audit's existing state rules speed up calibration?</li>
+<li>Are any DMV form changes pending in the top 10 states?</li>
+</ol>
+<aside>Close by saying the plan is designed to be revisited after wave 1: by day 11 we'll have real Autofill usage and feedback to re-rank with.</aside>
+</section>
+</main>
+<div class="notes" id="notes" hidden><b>Speaker notes</b><span id="notes-text"></span></div>
+<nav class="bar" aria-label="Slide controls"><button id="prev" type="button" aria-label="Previous slide">&#8592;</button><span class="count" id="count" aria-live="polite"></span><button id="next" type="button" aria-label="Next slide">&#8594;</button><button id="notes-btn" type="button" title="Speaker notes (N)">Notes</button></nav>
+<script>
+(function(){
+  const stage = document.querySelector('.stage');
+  const slides = Array.from(stage.querySelectorAll(':scope > section'));
+  const count = document.getElementById('count'), notes = document.getElementById('notes'), notesText = document.getElementById('notes-text');
+  let i = 0;
+  function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+  function show(n, fromHash){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => { s.classList.toggle('active', k === i); s.setAttribute('aria-hidden', k === i ? 'false' : 'true'); });
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    const aside = slides[i].querySelector('aside');
+    notesText.textContent = aside ? aside.textContent.trim() : 'No notes for this slide.';
+    if (!fromHash && location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function fromHash(){ const n = parseInt(location.hash.slice(1), 10); if (n) show(n - 1, true); }
+  function toggleNotes(){ notes.hidden = !notes.hidden; }
+  document.getElementById('prev').onclick = () => show(i - 1);
+  document.getElementById('next').onclick = () => show(i + 1);
+  document.getElementById('notes-btn').onclick = toggleNotes;
+  addEventListener('keydown', e => {
+    if (e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); show(i + 1); }
+    else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') show(0);
+    else if (e.key === 'End') show(slides.length - 1);
+    else if (e.key === 'n' || e.key === 'N') toggleNotes();
+  });
+  stage.addEventListener('click', e => { if (e.target.closest('a')) return; show(e.clientX > innerWidth / 2 ? i + 1 : i - 1); });
+  let x0 = null;
+  addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, {passive:true});
+  addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 40) show(dx < 0 ? i + 1 : i - 1); x0 = null; });
+  let t; addEventListener('mousemove', () => { document.body.classList.add('show-bar'); clearTimeout(t);
+    t = setTimeout(() => document.body.classList.remove('show-bar'), 1500); });
+  addEventListener('resize', fit); addEventListener('hashchange', fromHash);
+  fit(); show(0, true); fromHash();
+})();
+</script>
+</body>
+</html>

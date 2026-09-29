@@ -34,6 +34,8 @@ The approach is **traction-first**: prioritize states where existing customers a
   - `artifacts/web/fairway_autofill_plan.html` is the HTML page (https://claude.ai/artifact/DX2JQAPb8PyTTuLrkUepMw). It embeds a JSON copy of the scorecard, so re-export the data if the weights or inputs change.
   - `artifacts/deck/project/` is the Slides deck (https://claude.ai/artifact/69DQS1MpGiqmrtiegpQDsG): `deck.json` plus one `slides/<id>.html` per slide.
   - To republish the deck, use the Artifact tool with `url` set to the deck, `root` set to `artifacts/deck`, and only the changed files.
+  - `artifacts/deck.html` is the single-file deck to present or send. Build it with `python build_deck.py` from the slide files, and rebuild after any slide edit.
+  - `python build_deck.py --fragment` writes `artifacts/deck.fragment.html` (gitignored). Republish that file to https://claude.ai/artifact/MRRHQiGqYtkV4TT6vuzxzm.
   - Pie charts are inline SVG with paths computed in Python, and they use the dataviz skill's validated categorical palette in slot order.
 - `review_api/`: the Part 2 Flask service, which triages form-review comments with Claude and queues them by priority.
   - `triage.py` holds the prompt and JSON schema.

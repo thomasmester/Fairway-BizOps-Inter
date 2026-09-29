@@ -48,6 +48,8 @@ class ApiTest(unittest.TestCase):
         self.assertEqual(r.status_code, 201)
         ticket = r.get_json()
         self.assertEqual(ticket["priority"], "critical")
+        self.assertIsInstance(ticket["triage_ms"], int)
+        self.assertEqual(ticket["open_tickets_sent"], [])
         queue = self.client.get("/api/queue").get_json()
         self.assertEqual(queue["counts"], {"critical": 1, "high": 0, "medium": 0, "low": 0})
         notes = self.client.get("/api/notifications").get_json()

@@ -10,6 +10,7 @@ Production:   gunicorn app:app   (see render.yaml)
 import hmac
 import logging
 import os
+import time
 from pathlib import Path
 
 from flask import Flask, jsonify, request, send_from_directory
@@ -75,14 +76,17 @@ def create_app(classifier=None, db_path=None):
             return error(503, "No classifier configured. Set ANTHROPIC_API_KEY on the server.")
 
         open_tickets = store.open_tickets(feedback.get("customer"), feedback.get("form"))
+        started = time.perf_counter()
         try:
             triage = classify(feedback, open_tickets)
         except TriageError as e:
             app.logger.warning("triage failed: %s", e)
             return error(502, str(e))
+        triage_ms = round((time.perf_counter() - started) * 1000)
         ticket = store.create_ticket(feedback, triage)
         notify(store, ticket)
-        return jsonify(ticket), 201
+        return jsonify(ticket | {"triage_ms": triage_ms,
+                                 "open_tickets_sent": [t["id"] for t in open_tickets]}), 201
 
     @app.get("/api/tickets")
     def list_tickets():
